@@ -1,0 +1,29 @@
+[Unit]
+Description=Registers all Docker jobs into Consul
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=5s
+TimeoutStartSec=120
+TimeoutStopSec=25
+
+EnvironmentFile=/etc/environment
+
+# remove old container
+ExecStartPre=/bin/sh -c "docker ps -a | grep %p 1>/dev/null && docker rm %p || true"
+
+# Start the container
+ExecStart=/usr/bin/docker run \
+    --rm \
+    --name=%p  \
+    --net=host  \
+    --volume=/var/run/docker.sock:/tmp/docker.sock  \
+    gliderlabs/registrator:latest \
+    consul://192.168.11.1:8500
+
+ExecStop=/usr/bin/docker stop %p
+
+[X-Fleet]
+Global=true
