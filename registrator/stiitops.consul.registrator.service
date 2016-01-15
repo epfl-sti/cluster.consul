@@ -20,7 +20,7 @@ ExecStart=/usr/bin/docker run \
     --name=%p  \
     --net=host  \
     --volume=/var/run/docker.sock:/tmp/docker.sock  \
-    gliderlabs/registrator:latest \
+    registry.service.consul:5000/registrator:latest \
     consul://192.168.11.1:8500
 
 ExecStop=/usr/bin/docker stop %p
