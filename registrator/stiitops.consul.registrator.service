@@ -21,7 +21,7 @@ ExecStart=/usr/bin/docker run \
     --net=host  \
     --volume=/var/run/docker.sock:/tmp/docker.sock  \
     registry.service.consul:5000/registrator:latest \
-    consul://192.168.11.1:8500
+    consul://consul.service.consul:8500
 
 ExecStop=/usr/bin/docker stop %p
 
